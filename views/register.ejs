@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Kayıt Ol</title>
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+        <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+</head>
+
+<body>
+        <nav class="navbar navbar-expand-lg navbar-light" style="background-color: rgb(111, 109, 255); margin-bottom: 25px;">
+                <a class="navbar-brand" href="#">CA$HBOARD</a>
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo02" aria-controls="navbarTogglerDemo02" aria-expanded="false" aria-label="Toggle navigation">
+                  <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarTogglerDemo02">
+                  <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
+                  </ul>
+                  <% if(!currentUser){ %>
+                    <a style="border-radius: 15px; margin-right: 5px;" class="btn btn-outline-warning" href="/register"><strong>Kaydol</strong></a>
+                    <a style="border-radius: 15px;" class="btn btn-outline-light" href="/login"><strong>Giriş Yap</strong> </a>
+                  <% }else{ %>
+                    <a style="border-radius: 15px;" class="btn btn-outline-danger" href="/logout"><strong>Çıkış Yap</strong> </a>
+                  <% } %>
+                </div>
+            </nav>
+            <% if(error && error.length>0){ %>
+                <div class="container" style="margin-top: 10px;">
+                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                        <%= error %>
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                </div>
+            <% } %>
+            <% if(success && success.length>0){ %>
+                <div class="container" style="margin-top: 10px;">
+                    <div class="alert alert-success alert-dismissible fade show" role="alert">
+                        <%= success %>
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                </div>
+            <% } %>
+        <form style="width: 524px; margin: auto;" method="POST" action="/register">
+                <h2 class="text-center" style="margin-bottom: 35px;">Hesap Oluştur</h2>
+                <div class="form-group">
+                        <input class="form-control" type="text" name="username" placeholder="Kullanıcı Adı" required>
+                </div>
+                <div class="form-group">
+                        <input class="form-control" type="password" name="password" placeholder="Şifre" required>
+                </div>
+                <div class="form-group">
+                        <input class="form-control" type="password" name="passwordRepeat" placeholder="Şifre Tekrar" required>
+                </div>
+                <div class="form-group">
+                        <input class="form-control" type="text" name="apikey" placeholder="API KEY" required>
+                </div>
+                <div class="form-group">
+                        <input class="form-control" type="text" name="secretkey" placeholder="SECRET KEY" required>
+                </div>
+                <div class="form-group text-center">
+                        <button class="btn btn-outline-success" type="submit" style="width: 121px;">Kaydol</button>
+                </div>
+                <p style="font-size: small; text-align: justify;">Not: Bu uygulama yalnızca kullanıcıya yararlı bilgi sunup herhangi bir alım satım yapmadığından, Binance üzerinden API anahtarını alırken hesabınızı güvende tutmak için lütfen "Yalnızca Okuma" izni olan bir anahtar alınız.</p>
+                <a href="/login">Zaten bir hesabınız var mı? Buradan giriş yapın.</a>
+        </form>
+
+        
+</body>
+
+</html>
