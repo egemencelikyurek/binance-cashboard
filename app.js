@@ -38,7 +38,9 @@ app.use(function (req, res, next) {
         // APISECRET: 'xFH6O4KxdjIFJuUQHbDytu6PJoQNAYXraPA6X14MM9tc9hL1Fm5UCJmgGTblN3OD',           
         // APIKEY: 'ifyKy1JxzQtmnQ3DjMzpYmVXunSBlpDSMOMXkka7p7pQxY4D8VVQMYGNo0vpxNeq',
         // APISECRET: '5myHOkS9i3XdxLNND4Ewvp0oDwqOAqO2rjyRUk21RclFfN0LyXROTIBkQDiQdkuo',
-
+app.get("/", function(req, res){
+    res.redirect("/login");
+});
 app.get("/main", isLoggedIn, async function (req, res) {
     const binance = await new Binance().options(req.user.options);
     let balances;
