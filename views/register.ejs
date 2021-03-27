@@ -48,28 +48,30 @@
                     </div>
                 </div>
             <% } %>
-        <form style="width: 50%; margin: auto;" method="POST" action="/register">
-                <h2 class="text-center" style="margin-bottom: 35px;">Hesap Oluştur</h2>
-                <div class="form-group">
-                        <input class="form-control" type="text" name="username" placeholder="Kullanıcı Adı" required>
+        <form method="POST" action="/register">
+                <div style="margin: 0 auto;" class="text-center col-md-5 col-sm-12">
+                        <h2 class="text-center" style="margin-bottom: 35px;">Hesap Oluştur</h2>
+                        <div class="form-group">
+                                <input class="form-control" type="text" name="username" placeholder="Kullanıcı Adı" required>
+                        </div>
+                        <div class="form-group">
+                                <input class="form-control" type="password" name="password" placeholder="Şifre" required>
+                        </div>
+                        <div class="form-group">
+                                <input class="form-control" type="password" name="passwordRepeat" placeholder="Şifre Tekrar" required>
+                        </div>
+                        <div class="form-group">
+                                <input class="form-control" type="text" name="apikey" placeholder="API KEY" required>
+                        </div>
+                        <div class="form-group">
+                                <input class="form-control" type="text" name="secretkey" placeholder="SECRET KEY" required>
+                        </div>
+                        <div class="form-group text-center">
+                                <button class="btn btn-outline-success" type="submit" style="width: 121px;">Kaydol</button>
+                        </div>
+                        <p style="font-size: small; text-align: justify;">Not: Bu uygulama yalnızca kullanıcıya yararlı bilgi sunup herhangi bir alım satım yapmadığından, Binance üzerinden API anahtarını alırken hesabınızı güvende tutmak için lütfen "Yalnızca Okuma" izni olan bir anahtar alınız.</p>
+                        <a href="/login">Zaten bir hesabınız var mı? Buradan giriş yapın.</a>
                 </div>
-                <div class="form-group">
-                        <input class="form-control" type="password" name="password" placeholder="Şifre" required>
-                </div>
-                <div class="form-group">
-                        <input class="form-control" type="password" name="passwordRepeat" placeholder="Şifre Tekrar" required>
-                </div>
-                <div class="form-group">
-                        <input class="form-control" type="text" name="apikey" placeholder="API KEY" required>
-                </div>
-                <div class="form-group">
-                        <input class="form-control" type="text" name="secretkey" placeholder="SECRET KEY" required>
-                </div>
-                <div class="form-group text-center">
-                        <button class="btn btn-outline-success" type="submit" style="width: 121px;">Kaydol</button>
-                </div>
-                <p style="font-size: small; text-align: justify;">Not: Bu uygulama yalnızca kullanıcıya yararlı bilgi sunup herhangi bir alım satım yapmadığından, Binance üzerinden API anahtarını alırken hesabınızı güvende tutmak için lütfen "Yalnızca Okuma" izni olan bir anahtar alınız.</p>
-                <a href="/login">Zaten bir hesabınız var mı? Buradan giriş yapın.</a>
         </form>
 
         
