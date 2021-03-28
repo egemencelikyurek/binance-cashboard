@@ -51,21 +51,18 @@
 
       
     <div class="container">
-        <div class="row">
-            <a class="mr-auto" href="/main"><i class="fas fa-arrow-circle-left" style="color: green; font-size: 2.2em; "></i></a>
-            <h2 style="width: 55%;"><%= coin.first %>/USD</h2>
-        </div>
-
-        <div class="row" style="margin-bottom: 50px; margin-top: 20px;">
-            <div class="col-2">
-                <h6>Ortalama Maliyet: </h6>
-                <p id="avgcost"><%= coin.avgCost.toFixed(6) %></p>
+        <a href="/main"><i class="fas fa-arrow-circle-left" style="color: green; font-size: 2.2em; "></i></a>
+        <h2 class="text-center"><%= coin.first %>/USD</h2>
+        <div class="row" style="margin-bottom: 30px; margin-top: 20px;">
+            <div class="col-4 col-md-2">
+                <h6>Ortalama Maliyet</h6>
+                <p id="avgcost"><%= coin.avgCost.toFixed(6).replace(/0{0,4}$/, "") %></p>
             </div>       
-            <div class="col-2">
-                <h6>Anlık Fiyat:</h6>
-                <p><%= coin.price.toFixed(6) %></p>
+            <div class="col-4 col-md-2">
+                <h6>Anlık Fiyat</h6>
+                <p><%= coin.price.toFixed(6).replace(/0{0,4}$/, "") %></p>
             </div>       
-            <div class="col-2">
+            <div class="col-4 col-md-2">
                 <h6>Anlık Yüzdelik Kazanç</h6>
                 <p>% <%= ((coin.price/coin.avgCost-1)*100).toFixed(1) %></p>
             </div>
@@ -73,55 +70,56 @@
 
         
         <div class="row">
-            <div class="col-2" style="margin-right: 7%">
+            <div class="col-md-3 col-6">
                 <h6>İstenen Kâr Oranı</h6>
-                <div class="input-group mb-3">
+                <div class="input-group">
                     <span class="input-group-text" id="basic-addon1">%</span>
-                    <input id="percent" type="number" class="form-control" name="percent" aria-describedby="basic-addon1">
+                    <input id="percent" type="number" class="form-control" name="percent" aria-describedby="basic-addon1" value="0">
                   </div>
             </div>
-            <div class="col-4 text-center">
+            <div class="col-md-3 col-6">
                 <h6>Satılması Gereken Fiyat</h6>
-                <p id="pricetosell"></p>
+                <input type="number" id="pricetosell" class="form-control" disabled>
             </div>
         </div>
         <hr>
         <div class="row">
-            <div class="col-3">
+            <div class="col-6 col-md-2">
                 <h6>Toplam Alış: </h6>
             </div>
-            <div class="col-3">
+            <div class="col-6 col-md-3">
                 <p><%= coin.totalBuy.toFixed(2) %> $</p>
             </div>
         </div>       
         <div class="row">
-            <div class="col-3">
+            <div class="col-6 col-md-2">
                 <h6>Toplam Satış: </h6>
             </div>
-            <div class="col-3">
+            <div class="col-6 col-md-3">
                 <p><%= coin.totalSell.toFixed(2) %> $</p>
             </div>
         </div>       
         <div class="row">
-            <div class="col-3">
+            <div class="col-6 col-md-2">
                 <h6>Reel Kâr/Zarar: </h6>
             </div>
-            <div class="col-3">
+            <div class="col-6 col-md-3">
                 <p><%= coin.realProfit.toFixed(2) %> $</p>
             </div>
-        </div>       <div class="row">
-            <div class="col-3">
+        </div>       
+        <div class="row">
+            <div class="col-6 col-md-2">
                 <h6>Cüzdandaki Miktar: </h6>
             </div>
-            <div class="col-3">
+            <div class="col-6 col-md-3">
                 <p><%= coin.inWallet.toFixed(2) %> $</p>
             </div>
         </div>       
         <div class="row">
-            <div class="col-3">
+            <div class="col-6 col-md-2">
                 <h6>Anlık Kâr/Zarar: </h6>
             </div>
-            <div class="col-3">
+            <div class="col-6 col-md-3">
                 <p><%= coin.profit.toFixed(2) %> $</p>
             </div>
         </div>
