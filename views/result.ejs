@@ -10,6 +10,16 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
 <link rel="stylesheet" type="text/css" href="/stylesheets/styles.css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" integrity="sha512-iBBXm8fW90+nuLcSKlbmrPcLa0OT92xO1BIsZ+ywDWZCvqsWgccV3gFoRBv0z+8dLJgyAHIhR35VZc2oM/gI1w==" crossorigin="anonymous" />
+<style>
+            @media screen and (max-width: 600px) {
+            h6 {
+                font-size: 12px;
+            }
+            p {
+                font-size: 12px;
+            }
+        }
+</style>
 </head>
 <body>
         <nav class="navbar navbar-expand-lg navbar-light" style="background-color: rgb(111, 109, 255); margin-bottom: 25px;">
@@ -59,7 +69,7 @@
                 <p id="avgcost"><%= coin.avgCost.toFixed(6).replace(/0{0,4}$/, "") %></p>
             </div>       
             <div class="col-4 col-md-2">
-                <h6 class="mb-auto">Anlık Fiyat</h6>
+                <h6>Anlık Fiyat</h6>
                 <p><%= coin.price.toFixed(6).replace(/0{0,4}$/, "") %></p>
             </div>       
             <div class="col-4 col-md-2">
@@ -71,7 +81,7 @@
         
         <div class="row">
             <div class="col-md-3 col-6">
-                <h6 class="mb-auto">İstenen Kâr Oranı</h6>
+                <h6>İstenen Kâr Oranı</h6>
                 <div class="input-group">
                     <span class="input-group-text" id="basic-addon1">%</span>
                     <input id="percent" type="number" class="form-control" name="percent" aria-describedby="basic-addon1" value="0">
