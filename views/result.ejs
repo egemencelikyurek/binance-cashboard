@@ -53,13 +53,13 @@
     <div class="container">
         <a href="/main"><i class="fas fa-arrow-circle-left" style="color: green; font-size: 2.2em; "></i></a>
         <h2 class="text-center"><%= coin.first %>/USD</h2>
-        <div class="row" style="margin-bottom: 30px; margin-top: 20px;">
+        <div class="row" style="margin-bottom: 30px; margin-top: 20px; ">
             <div class="col-4 col-md-2">
                 <h6>Ortalama Maliyet</h6>
                 <p id="avgcost"><%= coin.avgCost.toFixed(6).replace(/0{0,4}$/, "") %></p>
             </div>       
             <div class="col-4 col-md-2">
-                <h6>Anlık Fiyat</h6>
+                <h6 class="mb-auto">Anlık Fiyat</h6>
                 <p><%= coin.price.toFixed(6).replace(/0{0,4}$/, "") %></p>
             </div>       
             <div class="col-4 col-md-2">
@@ -71,7 +71,7 @@
         
         <div class="row">
             <div class="col-md-3 col-6">
-                <h6>İstenen Kâr Oranı</h6>
+                <h6 class="mb-auto">İstenen Kâr Oranı</h6>
                 <div class="input-group">
                     <span class="input-group-text" id="basic-addon1">%</span>
                     <input id="percent" type="number" class="form-control" name="percent" aria-describedby="basic-addon1" value="0">
