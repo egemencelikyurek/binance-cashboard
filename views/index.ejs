@@ -41,6 +41,7 @@
             <a style="border-radius: 15px; margin-right: 5px;" class="btn btn-outline-warning" href="/register"><strong>Kaydol</strong></a>
             <a style="border-radius: 15px;" class="btn btn-outline-light" href="/login"><strong>Giriş Yap</strong> </a>
           <% }else{ %>
+            <p style="margin: auto 20px auto 0px;"><strong>Bakiye: </strong>$<%= totalBalance.toFixed(2) %></p>
             <a style="border-radius: 15px;" class="btn btn-outline-danger" href="/logout"><strong>Çıkış Yap</strong> </a>
           <% } %>
         </div>

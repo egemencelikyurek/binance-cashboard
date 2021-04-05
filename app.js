@@ -51,6 +51,7 @@ app.get("/main", isLoggedIn, async function (req, res) {
     }
     var quantities = Object.values(balances);
     var coinNames = Object.keys(balances);
+    var dollarqty = 0;
     var a = [];
     for(var i=0; i < quantities.length; i++){
         // Elimdeki coinler arasından itibari para dışındakileri seç
@@ -60,6 +61,9 @@ app.get("/main", isLoggedIn, async function (req, res) {
                 qty: parseFloat(quantities[i].available) + parseFloat(quantities[i].onOrder),
                 price: 0
             })
+        }
+        if((coinNames[i] == "USDT") || (coinNames[i] == "BUSD") && parseFloat(quantities[i].available) + parseFloat(quantities[i].onOrder) > 0){
+            dollarqty += parseFloat(quantities[i].available) + parseFloat(quantities[i].onOrder);
         }
     }
     var coins = [];
@@ -82,7 +86,12 @@ app.get("/main", isLoggedIn, async function (req, res) {
         a[i].profit = analyzeedCoin.profit;
         coins.push(a[i]);
     }
-    res.render("index", { coins: coins});
+    var totalblnc = 0;
+    for(var i=0; i<coins.length; i++){
+        totalblnc += coins[i].qty * coins[i].price
+    }
+    var totalBalance = totalblnc + dollarqty;
+    res.render("index", { coins: coins, totalBalance: totalBalance});
     return 0;
 
 });
@@ -102,7 +111,7 @@ app.get("/main/:id", isLoggedIn, async function(req, res){
     var obj = Object.values(balances)[index];
     var quantity = parseFloat(obj.available) + parseFloat(obj.onOrder);
     let coin = await analyzee(coinName, price, quantity, binance);
-    res.render("result", {coin: coin});
+    res.render("result", {coin: coin, totalBalance: totalBalance});
 });
 async function analyzee(tek, price, quantity, binance) {
     var cumulativeLot = 0; var totalCost = 0; var avgCost = 0; var totalBuy = 0; var totalSell = 0; var realProfit; var inWallet; var profit;
@@ -246,6 +255,9 @@ function isLoggedIn(req, res, next) {
         req.flash("error", "Bu sayfayı görüntüleme yetkiniz yok. Lütfen giriş yapın.")
         res.redirect("/login");
     }
+}
+function totalBalance(){
+    
 }
 var port = process.env.PORT || 3000;
 app.listen(port, function () {
