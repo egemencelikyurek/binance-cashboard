@@ -61,6 +61,7 @@ app.get("/main", isLoggedIn, async function (req, res) {
                 qty: parseFloat(quantities[i].available) + parseFloat(quantities[i].onOrder),
                 price: 0
             })
+            
         }
         if((coinNames[i] == "USDT") || (coinNames[i] == "BUSD") && parseFloat(quantities[i].available) + parseFloat(quantities[i].onOrder) > 0){
             dollarqty += parseFloat(quantities[i].available) + parseFloat(quantities[i].onOrder);
@@ -69,26 +70,33 @@ app.get("/main", isLoggedIn, async function (req, res) {
     var coins = [];
     for (var i = 0; i < a.length; i++) {
         let analyzeedCoin;
-        var isim = (a[i].name + "USDT") || (a[i].name + "BUSD");
+        try{
+            a[i].price = parseFloat((await binance.prices(a[i].name + "USDT"))[a[i].name + "USDT"]);
+        }
+        catch (e){
+            try{
+                a[i].price = parseFloat((await binance.prices(a[i].name + "BUSD"))[a[i].name + "BUSD"]);
+                console.log(a[i].name + " için USDT yok.");
+                console.log(e.body)
+            }
+            catch (a){
+                console.log(a.body);
+            }
+        }
         try {
-            // Elimdeki coinlerin anlık fiyatlarını getir.
-            a[i].price = parseFloat((await binance.prices(isim))[isim]);
-        } catch (e) {
-            console.log(e.body);
-        }     
-        try {
-            // analyzeedCoin = await analyze(a[i].name + "_USDT" || a[i].name + "_BUSD");
             analyzeedCoin = await analyzee(a[i].name, a[i].price, a[i].qty, binance);
+            console.log(analyzeedCoin);
             a[i].avgCost = analyzeedCoin.avgCost;
             a[i].profit = analyzeedCoin.profit;
             coins.push(a[i]);
         } catch (e) {
+            console.log("==== " + a[i].name + " için hata");
             console.log(e.body);
         }
     }
     var totalblnc = 0;
     for(var i=0; i<coins.length; i++){
-        totalblnc += coins[i].qty * coins[i].price
+        totalblnc += coins[i].qty * coins[i].price;
     }
     var totalBalance = totalblnc + dollarqty;
     res.render("index", { coins: coins, totalBalance: totalBalance});
@@ -115,12 +123,20 @@ app.get("/main/:id", isLoggedIn, async function(req, res){
 });
 async function analyzee(tek, price, quantity, binance) {
     var cumulativeLot = 0; var totalCost = 0; var avgCost = 0; var totalBuy = 0; var totalSell = 0; var realProfit; var inWallet; var profit;
-    let tradesUSDT, tradesBUSD, trades; 
-    try {
+    let tradesUSDT = [];
+    let tradesBUSD = [];
+    let trades; 
+    try{
         tradesUSDT = await binance.trades(tek + "USDT");
+    }
+    catch (e){
+        console.log(tek + "için USDT yok")
+    }
+    try{
         tradesBUSD = await binance.trades(tek + "BUSD");
-    } catch (e) {
-        console.log(e.body);
+    }
+    catch (e){
+        console.log(tek + "için BUSD yok");
     }
     let unsortedTrades;
     if(tradesBUSD != undefined){
