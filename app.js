@@ -111,7 +111,7 @@ app.get("/main/:id", isLoggedIn, async function(req, res){
     var obj = Object.values(balances)[index];
     var quantity = parseFloat(obj.available) + parseFloat(obj.onOrder);
     let coin = await analyzee(coinName, price, quantity, binance);
-    res.render("result", {coin: coin, totalBalance: totalBalance});
+    res.render("result", {coin: coin});
 });
 async function analyzee(tek, price, quantity, binance) {
     var cumulativeLot = 0; var totalCost = 0; var avgCost = 0; var totalBuy = 0; var totalSell = 0; var realProfit; var inWallet; var profit;
