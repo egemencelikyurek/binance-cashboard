@@ -79,12 +79,12 @@ app.get("/main", isLoggedIn, async function (req, res) {
         try {
             // analyzeedCoin = await analyze(a[i].name + "_USDT" || a[i].name + "_BUSD");
             analyzeedCoin = await analyzee(a[i].name, a[i].price, a[i].qty, binance);
+            a[i].avgCost = analyzeedCoin.avgCost;
+            a[i].profit = analyzeedCoin.profit;
+            coins.push(a[i]);
         } catch (e) {
             console.log(e.body);
         }
-        a[i].avgCost = analyzeedCoin.avgCost;
-        a[i].profit = analyzeedCoin.profit;
-        coins.push(a[i]);
     }
     var totalblnc = 0;
     for(var i=0; i<coins.length; i++){
@@ -255,9 +255,6 @@ function isLoggedIn(req, res, next) {
         req.flash("error", "Bu sayfayı görüntüleme yetkiniz yok. Lütfen giriş yapın.")
         res.redirect("/login");
     }
-}
-function totalBalance(){
-    
 }
 var port = process.env.PORT || 3000;
 app.listen(port, function () {
