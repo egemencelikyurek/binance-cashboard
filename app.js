@@ -118,7 +118,6 @@ app.get("/main/:id", isLoggedIn, async function(req, res){
     var obj = Object.values(balances)[index];
     var quantity = parseFloat(obj.available) + parseFloat(obj.onOrder);
     let coin = await analyzee(coinName, price, quantity, binance);
-    console.log(coin);
     res.render("result", {coin: coin});
 });
 async function analyzee(tek, price, quantity, binance) {
@@ -187,7 +186,6 @@ async function analyzee(tek, price, quantity, binance) {
         }
         coin.trades.push(eachtrade);
     });   
-    console.log(coin);
     return coin; 
 }
 async function analyze(cift) {
