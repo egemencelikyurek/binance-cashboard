@@ -133,7 +133,33 @@
                 <p><%= coin.profit.toFixed(2) %> $</p>
             </div>
         </div>
+        <hr>
 
+        <table class="table table-sm">
+            <thead>
+                <tr>
+                    <th scope="col">Tarih</th>
+                    <th scope="col">İşlem Çifti</th>
+                    <th scope="col">Yön</th>
+                    <th scope="col">Fiyat</th>
+                    <th scope="col">Adet</th>
+                    <th scope="col">Toplam</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% for(var i=coin.trades.length-1; i>=0; i--) {%>
+                    <tr>
+                        <td><%= moment(coin.trades[i].time).format("DD.MM.YYYY kk:mm") %></td>
+                        <td><%= coin.trades[i].symbol %></td>
+                        <td><%= coin.trades[i].isBuyer %></td>
+                        <td><%= coin.trades[i].price.replace(/0*$/,"") %></td>
+                        <td><%= coin.trades[i].qty.replace(/0+$/,"") %></td>
+                        <td><%= coin.trades[i].quoteQty.replace("USD","") %> USD</td>
+                    </tr>
+                <% } %>
+            </tbody>
+
+        </table>
     </div>
     
     <script src="/javascripts/pricetosell.js"></script>

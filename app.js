@@ -9,6 +9,7 @@ var flash = require("connect-flash");
 var methodOverride = require("method-override");
 var User = require("./models/user");
 const mongoose = require("mongoose");
+var moment = require("moment");
 
 mongoose.connect("mongodb+srv://egemencelikyurek:xWMdv4v9GHyI24qZ@cluster0.j25ug.mongodb.net/Cashboard?retryWrites=true&w=majority", { useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false });
 
@@ -32,6 +33,7 @@ app.use(function (req, res, next) {
     res.locals.error = req.flash("error");
     res.locals.success = req.flash("success");
     res.locals.warning = req.flash("warning");
+    res.locals.moment = moment;
     next();
 });
         //APIKEY: 'gdUnPetN3h3rXP9tQ1gOdkvlTHfPTZCqaJaTwGBtqvxCub536IFfKFb9F0WeeFdO',
@@ -76,7 +78,6 @@ app.get("/main", isLoggedIn, async function (req, res) {
         catch (e){
             try{
                 a[i].price = parseFloat((await binance.prices(a[i].name + "BUSD"))[a[i].name + "BUSD"]);
-                console.log(a[i].name + " için USDT yok.");
                 console.log(e.body)
             }
             catch (a){
@@ -85,12 +86,10 @@ app.get("/main", isLoggedIn, async function (req, res) {
         }
         try {
             analyzeedCoin = await analyzee(a[i].name, a[i].price, a[i].qty, binance);
-            console.log(analyzeedCoin);
             a[i].avgCost = analyzeedCoin.avgCost;
             a[i].profit = analyzeedCoin.profit;
             coins.push(a[i]);
         } catch (e) {
-            console.log("==== " + a[i].name + " için hata");
             console.log(e.body);
         }
     }
@@ -119,24 +118,24 @@ app.get("/main/:id", isLoggedIn, async function(req, res){
     var obj = Object.values(balances)[index];
     var quantity = parseFloat(obj.available) + parseFloat(obj.onOrder);
     let coin = await analyzee(coinName, price, quantity, binance);
+    console.log(coin);
     res.render("result", {coin: coin});
 });
 async function analyzee(tek, price, quantity, binance) {
     var cumulativeLot = 0; var totalCost = 0; var avgCost = 0; var totalBuy = 0; var totalSell = 0; var realProfit; var inWallet; var profit;
     let tradesUSDT = [];
     let tradesBUSD = [];
-    let trades; 
     try{
         tradesUSDT = await binance.trades(tek + "USDT");
     }
     catch (e){
-        console.log(tek + "için USDT yok")
+        console.log(e.body);
     }
     try{
         tradesBUSD = await binance.trades(tek + "BUSD");
     }
     catch (e){
-        console.log(tek + "için BUSD yok");
+        console.log(e.body);
     }
     let unsortedTrades;
     if(tradesBUSD != undefined){
@@ -144,9 +143,10 @@ async function analyzee(tek, price, quantity, binance) {
     }else{
         unsortedTrades = tradesUSDT;
     }
-    trades = await unsortedTrades.sort((a, b) => {
+    const trades = await unsortedTrades.sort((a, b) => {
         return parseFloat(a.time) - parseFloat(b.time);
     });
+    
     for(var i= 0; i<trades.length; i++){
         if(trades[i].isBuyer){
             cumulativeLot += parseFloat(trades[i].qty);
@@ -162,6 +162,7 @@ async function analyzee(tek, price, quantity, binance) {
     realProfit = totalSell - totalBuy;
     inWallet = price * quantity;
     profit = realProfit + inWallet;
+    
     var coin = {
         first: tek,
         avgCost: avgCost,
@@ -170,8 +171,23 @@ async function analyzee(tek, price, quantity, binance) {
         realProfit: realProfit,
         inWallet: inWallet,
         profit: profit,       
-        price: price 
+        price: price,
+        trades: []
     }
+
+    trades.forEach(function(a){
+        var d = moment(a.time);
+        var eachtrade = {
+            time: d,
+            symbol: a.symbol,
+            isBuyer: a.isBuyer ? "AL" : "SAT",
+            price: a.price,
+            qty: a.qty,
+            quoteQty: a.quoteQty + "USD"
+        }
+        coin.trades.push(eachtrade);
+    });   
+    console.log(coin);
     return coin; 
 }
 async function analyze(cift) {
