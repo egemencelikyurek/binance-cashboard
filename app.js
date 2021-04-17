@@ -145,36 +145,63 @@ async function analyzee(tek, price, quantity, binance) {
     const trades = await unsortedTrades.sort((a, b) => {
         return parseFloat(a.time) - parseFloat(b.time);
     });
-    
+    var coin = {
+        first: tek,
+        avgCost: 0,
+        totalBuy: 0,
+        totalSell: 0,
+        realProfit: 0,
+        inWallet: 0,
+        profit: 0,       
+        price: 0,
+        trades: []
+    }
+    var currentBuy = 0;
+    var currentSell = 0;
     for(var i= 0; i<trades.length; i++){
         if(trades[i].isBuyer){
             cumulativeLot += parseFloat(trades[i].qty);
             totalCost += parseFloat(trades[i].qty) * parseFloat(trades[i].price);
             totalBuy += parseFloat(trades[i].qty) * parseFloat(trades[i].price);
+            currentBuy += parseFloat(trades[i].qty) * parseFloat(trades[i].price);
             avgCost = totalCost / cumulativeLot;
         }else{
             cumulativeLot -= parseFloat(trades[i].qty);
             totalCost -= avgCost * parseFloat(trades[i].qty);
             totalSell += parseFloat(trades[i].qty) * parseFloat(trades[i].price);
+            currentSell += parseFloat(trades[i].qty) * parseFloat(trades[i].price);
         }
+        if(cumulativeLot*trades[i].price <= 1){
+            currentBuy = 0;
+            currentSell = 0;
+        }
+        var d = moment(trades[i].time);
+        var eachtrade = {
+            time: d,
+            symbol: trades[i].symbol,
+            isBuyer: trades[i].isBuyer ? "AL" : "SAT",
+            price: trades[i].price,
+            qty: trades[i].qty,
+            quoteQty: trades[i].quoteQty + "USD",
+            cumulativeLot: cumulativeLot,
+            cumulativeMoney: currentBuy-currentSell
+        }
+        coin.trades.push(eachtrade);
+        
     }
     realProfit = totalSell - totalBuy;
     inWallet = price * quantity;
     profit = realProfit + inWallet;
     
-    var coin = {
-        first: tek,
-        avgCost: avgCost,
-        totalBuy: totalBuy,
-        totalSell: totalSell,
-        realProfit: realProfit,
-        inWallet: inWallet,
-        profit: profit,       
-        price: price,
-        trades: []
-    }
-
-    trades.forEach(function(a){
+    coin.first = tek;
+    coin.avgCost = avgCost;
+    coin.totalBuy = totalBuy;
+    coin.totalSell = totalSell;
+    coin.realProfit = realProfit;
+    coin.inWallet = inWallet;
+    coin.profit = profit;
+    coin.price = price;
+/*     trades.forEach(function(a){
         var d = moment(a.time);
         var eachtrade = {
             time: d,
@@ -185,7 +212,7 @@ async function analyzee(tek, price, quantity, binance) {
             quoteQty: a.quoteQty + "USD"
         }
         coin.trades.push(eachtrade);
-    });   
+    });    */
     return coin; 
 }
 async function analyze(cift) {

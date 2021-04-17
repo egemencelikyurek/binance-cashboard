@@ -135,7 +135,7 @@
         </div>
         <hr>
 
-        <table class="table table-sm">
+        <table class="table table-hover table-sm">
             <thead>
                 <tr>
                     <th scope="col">Tarih</th>
@@ -143,16 +143,24 @@
                     <th scope="col">Fiyat</th>
                     <th scope="col">Adet</th>
                     <th scope="col">Toplam</th>
+                    <th scope="col">Kümülatif Adet</th>
+                    <th scope="col">Kümülatif Para</th>
                 </tr>
             </thead>
             <tbody>
                 <% for(var i=coin.trades.length-1; i>=0; i--) {%>
-                    <tr>
+                    <% if(coin.trades[i].isBuyer == "AL"){ %>
+                        <tr style="color: rgb(29, 145, 1);">
+                    <% }else{ %>
+                        <tr style="color: rgb(192, 0, 0);">
+                    <% } %>
                         <td><%= moment(coin.trades[i].time).format("DD.MM.YYYY kk:mm") %></td>
                         <td><%= coin.trades[i].isBuyer %></td>
-                        <td><%= coin.trades[i].price.replace(/0*$/,"") %></td>
-                        <td><%= coin.trades[i].qty.replace(/0+$/,"") %></td>
-                        <td><%= coin.trades[i].quoteQty.replace("USD","") %> USD</td>
+                        <td><%= parseFloat(coin.trades[i].price).toFixed(6).replace(/0{0,4}$/, "") %></td>
+                        <td><%= parseFloat(coin.trades[i].qty).toFixed(2) %></td>
+                        <td><%= parseFloat(coin.trades[i].quoteQty.replace("USD","")).toFixed(2) %> USD</td>
+                        <td><%= parseFloat(coin.trades[i].cumulativeLot).toFixed(6).replace(/0{0,4}$/, "") %></td>
+                        <td><%= parseFloat(coin.trades[i].cumulativeMoney).toFixed(2) %></td>
                     </tr>
                 <% } %>
             </tbody>
