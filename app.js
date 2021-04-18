@@ -88,6 +88,9 @@ app.get("/main", isLoggedIn, async function (req, res) {
             analyzeedCoin = await analyzee(a[i].name, a[i].price, a[i].qty, binance);
             a[i].avgCost = analyzeedCoin.avgCost;
             a[i].profit = analyzeedCoin.profit;
+            a[i].currentBuy = analyzeedCoin.currentBuy;
+            a[i].currentSell = analyzeedCoin.currentSell;
+            a[i].inWallet = analyzeedCoin.inWallet;
             coins.push(a[i]);
         } catch (e) {
             console.log(e.body);
@@ -154,6 +157,8 @@ async function analyzee(tek, price, quantity, binance) {
         inWallet: 0,
         profit: 0,       
         price: 0,
+        currentBuy: 0,
+        currentSell: 0,
         trades: []
     }
     var currentBuy = 0;
@@ -201,6 +206,8 @@ async function analyzee(tek, price, quantity, binance) {
     coin.inWallet = inWallet;
     coin.profit = profit;
     coin.price = price;
+    coin.currentBuy = currentBuy;
+    coin.currentSell = currentSell;
 /*     trades.forEach(function(a){
         var d = moment(a.time);
         var eachtrade = {
@@ -288,7 +295,11 @@ app.post("/register", function (req, res) {
 });
 // Show Login Page
 app.get("/login", function (req, res) {
-    res.render("login");
+    if(req.isUnauthenticated()){
+        res.render("login");
+    }else{
+        res.send("Zaten giriş yaptınız. Devam etmek için <a href='/main'>tıklayınız</a>")
+    }
 });
 // Login
 app.post("/login", passport.authenticate("local", {

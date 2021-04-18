@@ -92,45 +92,45 @@
                 <input type="number" id="pricetosell" class="form-control" disabled>
             </div>
         </div>
-        <hr>
+        <hr>     
         <div class="row">
             <div class="col-6 col-md-2">
-                <h6>Toplam Alış: </h6>
+                <h6>Alış: </h6>
             </div>
             <div class="col-6 col-md-3">
-                <p><%= coin.totalBuy.toFixed(2) %> $</p>
+                <p>$<%= coin.currentBuy.toFixed(2) %></p>
             </div>
-        </div>       
+        </div>  
         <div class="row">
             <div class="col-6 col-md-2">
-                <h6>Toplam Satış: </h6>
+                <h6>Satış: </h6>
             </div>
             <div class="col-6 col-md-3">
-                <p><%= coin.totalSell.toFixed(2) %> $</p>
+                <p>$<%= coin.currentSell.toFixed(2) %></p>
             </div>
-        </div>       
-        <div class="row">
-            <div class="col-6 col-md-2">
-                <h6>Reel Kâr/Zarar: </h6>
-            </div>
-            <div class="col-6 col-md-3">
-                <p><%= coin.realProfit.toFixed(2) %> $</p>
-            </div>
-        </div>       
+        </div>  
         <div class="row">
             <div class="col-6 col-md-2">
                 <h6>Cüzdandaki Miktar: </h6>
             </div>
             <div class="col-6 col-md-3">
-                <p><%= coin.inWallet.toFixed(2) %> $</p>
+                <p>$<%= coin.inWallet.toFixed(2) %></p>
             </div>
-        </div>       
+        </div>
         <div class="row">
             <div class="col-6 col-md-2">
-                <h6>Anlık Kâr/Zarar: </h6>
+                <h6>Anlık Kâr/Zarar:</h6>
             </div>
             <div class="col-6 col-md-3">
-                <p><%= coin.profit.toFixed(2) %> $</p>
+                <p>$<%= (coin.currentSell-coin.currentBuy + coin.inWallet).toFixed(2) %></p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-6 col-md-2">
+                <h6>Tüm Zamanlarda Kâr/Zarar: </h6>
+            </div>
+            <div class="col-6 col-md-3">
+                <p>$<%= coin.profit.toFixed(2) %></p>
             </div>
         </div>
         <hr>
@@ -143,8 +143,8 @@
                     <th scope="col">Fiyat</th>
                     <th scope="col">Adet</th>
                     <th scope="col">Toplam</th>
-                    <th scope="col">Kümülatif Adet</th>
-                    <th scope="col">Kümülatif Para</th>
+                    <th scope="col">Küm. Adet</th>
+                    <th scope="col">Küm. Para</th>
                 </tr>
             </thead>
             <tbody>
@@ -158,9 +158,9 @@
                         <td><%= coin.trades[i].isBuyer %></td>
                         <td><%= parseFloat(coin.trades[i].price).toFixed(6).replace(/0{0,4}$/, "") %></td>
                         <td><%= parseFloat(coin.trades[i].qty).toFixed(2) %></td>
-                        <td><%= parseFloat(coin.trades[i].quoteQty.replace("USD","")).toFixed(2) %> USD</td>
+                        <td>$<%= parseFloat(coin.trades[i].quoteQty.replace("USD","")).toFixed(2) %></td>
                         <td><%= parseFloat(coin.trades[i].cumulativeLot).toFixed(6).replace(/0{0,4}$/, "") %></td>
-                        <td><%= parseFloat(coin.trades[i].cumulativeMoney).toFixed(2) %></td>
+                        <td>$<%= parseFloat(coin.trades[i].cumulativeMoney).toFixed(2) %></td>
                     </tr>
                 <% } %>
             </tbody>
