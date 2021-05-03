@@ -81,25 +81,23 @@
                     </thead>
                     <tbody>
                         <% coins.forEach(function(coin){ %>
-                            <% if((coin.qty*coin.price)>1){ %>
-                                <tr>
-                                    <td scope="row" style="font-weight: 600;"><a href="/main/<%= coin.name %>"><%= coin.name %></a></td>
-                                    <td>$<%= (coin.inWallet).toFixed(2) %></td>
-                                    <td><%= coin.avgCost.toFixed(6).replace(/0{0,4}$/, "") %></td>
-                                    <td><%= coin.price %></td>
-                                    <% if((((coin.price/coin.avgCost)-1)*100)>0){ %>
-                                        <td style="font-weight: 600; color: green;">%<%= (((coin.price/coin.avgCost)-1)*100).toFixed(2) %></td>
-                                    <% }else{ %>
-                                        <td style="font-weight: 600; color: red;">%<%= (((coin.price/coin.avgCost)-1)*100).toFixed(2) %></td>
-                                    <% } %>                            
-                                    <% if(coin.currentSell - coin.currentBuy + coin.inWallet > 0){ %>
-                                        <td style="font-weight: 600; color: green;">$<%= (coin.currentSell-coin.currentBuy + coin.inWallet).toFixed(2) %></td>
-                                    <% }else{ %>
-                                        <td style="font-weight: 600; color: red;">$<%= (coin.currentSell-coin.currentBuy + coin.inWallet).toFixed(2) %></td>
-                                    <% } %>
-                                    
-                                  </tr>
-                            <% } %>
+                            <tr>
+                                <td scope="row" style="font-weight: 600;"><a href="/main/<%= coin.name %>"><%= coin.name %></a></td>
+                                <td>$<%= (coin.inWallet).toFixed(2) %></td>
+                                <td><%= coin.avgCost.toFixed(6).replace(/0{0,4}$/, "") %></td>
+                                <td><%= coin.price %></td>
+                                <% if(coin.price > coin.avgCost){ %>
+                                    <td style="font-weight: 600; color: green;">%<%= (((coin.price/coin.avgCost)-1)*100).toFixed(2) %></td>
+                                <% }else{ %>
+                                    <td style="font-weight: 600; color: red;">%<%= (((coin.price/coin.avgCost)-1)*100).toFixed(2) %></td>
+                                <% } %>                            
+                                <% if(coin.price > coin.avgCost){ %>
+                                    <td style="font-weight: 600; color: green;">$<%= ((coin.price-coin.avgCost)*coin.qty).toFixed(2) %></td>
+                                <% }else{ %>
+                                    <td style="font-weight: 600; color: red;">$<%= ((coin.price-coin.avgCost)*coin.qty).toFixed(2) %></td>
+                                <% } %>
+                                
+                                </tr>
                         <% }) %>
                     </tbody>
                   </table>

@@ -122,7 +122,7 @@
                 <h6>Anlık Kâr/Zarar:</h6>
             </div>
             <div class="col-6 col-md-3">
-                <p>$<%= (coin.currentSell-coin.currentBuy + coin.inWallet).toFixed(2) %></p>
+                <p>$<%= ((coin.price-coin.avgCost)*coin.quantityWallet).toFixed(2) %></p>
             </div>
         </div>
         <div class="row">

@@ -88,8 +88,6 @@ app.get("/main", isLoggedIn, async function (req, res) {
             analyzeedCoin = await analyzee(a[i].name, a[i].price, a[i].qty, binance);
             a[i].avgCost = analyzeedCoin.avgCost;
             a[i].profit = analyzeedCoin.profit;
-            a[i].currentBuy = analyzeedCoin.currentBuy;
-            a[i].currentSell = analyzeedCoin.currentSell;
             a[i].inWallet = analyzeedCoin.inWallet;
             coins.push(a[i]);
         } catch (e) {
@@ -155,8 +153,9 @@ async function analyzee(tek, price, quantity, binance) {
         totalSell: 0,
         realProfit: 0,
         inWallet: 0,
+        quantityWallet: quantity,
         profit: 0,       
-        price: 0,
+        price: price,
         currentBuy: 0,
         currentSell: 0,
         trades: []
@@ -165,20 +164,20 @@ async function analyzee(tek, price, quantity, binance) {
     var currentSell = 0;
     for(var i= 0; i<trades.length; i++){
         if(trades[i].isBuyer){
+            // AVG calculation
             cumulativeLot += parseFloat(trades[i].qty);
             totalCost += parseFloat(trades[i].qty) * parseFloat(trades[i].price);
-            totalBuy += parseFloat(trades[i].qty) * parseFloat(trades[i].price);
-            currentBuy += parseFloat(trades[i].qty) * parseFloat(trades[i].price);
             avgCost = totalCost / cumulativeLot;
+            // For profit calculation            
+            totalBuy += parseFloat(trades[i].quoteQty);
+            currentBuy += parseFloat(trades[i].quoteQty);
         }else{
+            // AVG calculation
             cumulativeLot -= parseFloat(trades[i].qty);
             totalCost -= avgCost * parseFloat(trades[i].qty);
-            totalSell += parseFloat(trades[i].qty) * parseFloat(trades[i].price);
-            currentSell += parseFloat(trades[i].qty) * parseFloat(trades[i].price);
-        }
-        if(cumulativeLot*trades[i].price <= 1){
-            currentBuy = 0;
-            currentSell = 0;
+            // For profit calculation
+            totalSell += parseFloat(trades[i].quoteQty);
+            currentSell += parseFloat(trades[i].quoteQty)
         }
         var d = moment(trades[i].time);
         var eachtrade = {
@@ -205,21 +204,8 @@ async function analyzee(tek, price, quantity, binance) {
     coin.realProfit = realProfit;
     coin.inWallet = inWallet;
     coin.profit = profit;
-    coin.price = price;
     coin.currentBuy = currentBuy;
     coin.currentSell = currentSell;
-/*     trades.forEach(function(a){
-        var d = moment(a.time);
-        var eachtrade = {
-            time: d,
-            symbol: a.symbol,
-            isBuyer: a.isBuyer ? "AL" : "SAT",
-            price: a.price,
-            qty: a.qty,
-            quoteQty: a.quoteQty + "USD"
-        }
-        coin.trades.push(eachtrade);
-    });    */
     return coin; 
 }
 async function analyze(cift) {
